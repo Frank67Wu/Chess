@@ -1,0 +1,25 @@
+#board {
+    height: 40em;
+    width: 40em;
+    border-style: solid;
+}
+
+.blackSquare {
+    height: 5em;
+    width: 5em;
+    background-color: black;
+}
+
+.whiteSquare {
+    height: 5em;
+    width: 5em;
+    background-color: white;
+}
+
+.row {
+    height: 5em;
+    width: 40em;
+    display: flex;
+    
+    
+}
