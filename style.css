@@ -16,10 +16,10 @@
     background-color: white;
 }
 
-.row {
+#board > div {
     height: 5em;
     width: 40em;
     display: flex;
-    
+
     
 }

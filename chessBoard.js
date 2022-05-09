@@ -16,7 +16,6 @@ function addSquares() {
     }
 }
 
-
 function displayBoard() {
     let chessBoard= document.createElement('div');
     chessBoard.setAttribute('id', 'board');
@@ -24,7 +23,6 @@ function displayBoard() {
 
     for (let i = 0; i < 8; i++) {
         let boardRow = document.createElement('div');
-        boardRow.classList.add('row');
         chessBoard.appendChild(boardRow);
     }
 
@@ -33,3 +31,20 @@ function displayBoard() {
 }
 
 displayBoard();
+
+import {Knight, Pawn, Queen, King} from "./chessPieces.js";
+import Board from "./Square.js";
+
+let board = new Board();
+board.setSquares();
+
+let knight = new Knight('black', 4, 4);
+
+console.log(knight);
+console.log(knight.getValidMoves(board));
+
+let pawn = new Pawn('white', 6, 6);
+console.log(pawn.getValidMoves(board));
+
+let queen = new Queen('white', 3, 4);
+console.log(queen.getValidMoves(board));
