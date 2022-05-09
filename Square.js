@@ -1,22 +1,28 @@
-class Square {
+export class Square {
 
     constructor(x, y, colour) {
         this.x = x;
         this.y = y;
         this.colour = colour;
         this.occupied = false;
+        this.piece = null;
     }
 
     getPiece() {
         return this.piece;
     }
 
-    setPiece() {
+    putPiece(piece) {
         this.piece = piece;
+        this.occupied = true;
+    }
+
+    getColour() {
+        return this.colour;
     }
 }
 
-export default class Board{
+export class Board{
     
     constructor() {
         this.myBoard = [];
@@ -37,8 +43,16 @@ export default class Board{
         return (this.myBoard[y*8 + x]);
     }
 
+    setPiece(x, y, piece) {
+        this.myBoard[y * 8 + x].putPiece(piece);
+    }
+
     checkSquare(x, y) {
         return (this.myBoard[y*8 + x].occupied);
+    }
+
+    displayBoard() {
+        console.log(this.myBoard);
     }
 
 }
