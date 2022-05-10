@@ -237,7 +237,6 @@ function checkTopRight(colour, x, y, board, arr) {
 function checkBottomLeft(colour, x, y, board, arr) {
     x--;
     y++;
-    console.log(x, y);
     while (x >= 0 && y <= 7 && !board.checkSquare(x, y)) {
         arr.push(board.getSquare(x, y));
         x--;

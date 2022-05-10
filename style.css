@@ -5,19 +5,23 @@
 }
 
 .blackSquare {
-    height: 5em;
-    width: 5em;
+    height: 78px;
+    width: 78px;
     background-color: black;
     display: flex;
+    border-style: solid;
+    border-width: 1px;
     justify-content: center;
     
 }
 
 .whiteSquare {
-    height: 5em;
-    width: 5em;
+    height: 78px;
+    width: 78px;
     background-color: white;
     display: flex;
+    border-style: solid;
+    border-width: 1px;
     justify-content: center;
 }
 
@@ -27,4 +31,9 @@
     display: flex;
 
     
+}
+
+.highlight {
+    transition-duration: 400ms;
+    background-color: cornsilk;
 }

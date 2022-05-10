@@ -8,6 +8,8 @@ function newGame() {
     let board = new Board();
     board.setSquares();
 
+    let highlighted  = [];
+
     for(let i = 0; i < 8; i++) {
         board.setPiece(i, 6, new Pawn('white', i, 6));
         board.setPiece(i, 1, new Pawn('black', i, 1));
@@ -36,7 +38,7 @@ function newGame() {
     board.setPiece(3, 0, new Queen('black', 3, 0));
 
     displayPiecesStart(board);
-    createUserInteraction(board);
+    createUserInteraction(board, highlighted);
     
 
     return board;
@@ -73,13 +75,27 @@ function showOccupied(board) {
     }
 }
 
-function createUserInteraction(board) {
+function clearHighlight(board, toClear) {
+    while (toClear.length > 0) {
+        document.getElementById('board').children.item(toClear[0].y).children.item(toClear[0].x).classList.remove('highlight');
+        toClear.shift();
+    }
+}
+
+function createUserInteraction(board, highlighted) {
     for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
                 let mySquare = document.getElementById('board').children.item(i).children.item(j);
-                mySquare.addEventListener('click', () => {                    
-                    let validMoves = board.getPiece(j,i).getValidMoves(board);  
-                    console.log(validMoves);
+                mySquare.addEventListener('click', () => {   
+                    clearHighlight(board, highlighted);        
+                    if (board.checkSquare(j, i)) {
+                        let validMoves = board.getPiece(j,i).getValidMoves(board);  
+                        for (let k = 0; k < validMoves.length; k++) {
+                            document.getElementById('board').children.item(validMoves[k].y).children.item(validMoves[k].x).classList.add('highlight');
+                            highlighted.push(validMoves[k]);
+                        }
+                    } 
+                    console.log(highlighted);
                 })
             }
     }
