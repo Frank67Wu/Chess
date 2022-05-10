@@ -143,9 +143,9 @@ export class Pawn extends Piece{
         if (this.y + direction < 8 && this.y + direction >= 0) {
             if (!board.checkSquare(this.x, this.y + direction)) {
                 validArr.push(board.getSquare(this.x, this.y + direction));
-            }
-            if (this.y == ((7 + direction) % 7) && (!board.checkSquare(this.x, this.y + 2 * direction) || board.getSquare(this.x, this.y + 2 * direction).getPieceColour() != this.colour)) {
-                validArr.push(board.getSquare(this.x, this.y + 2 * direction));
+                if (this.y == ((7 + direction) % 7) && !board.checkSquare(this.x, this.y + 2 * direction)) {
+                    validArr.push(board.getSquare(this.x, this.y + 2 * direction));
+                }
             }
             if (this.x + 1 < 8 && this.x + 1 >= 0 && 
                 board.checkSquare(this.x + 1, this.y + direction) && board.getSquare(this.x + 1, this.y + direction).getPieceColour() != this.colour) {
