@@ -13,8 +13,8 @@ export class Square {
         this.occupied = true;
     }
 
-    getColour() {
-        return this.colour;
+    getPieceColour() {
+        return this.piece.colour;
     }
 }
 

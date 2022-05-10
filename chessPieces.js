@@ -38,10 +38,10 @@ export class King extends Piece {
         let validArr = [];
         for (let i = this.x - 1; i <= this.x + 1; i++) {
             for (let j = this.y - 1; j <= this.y + 1; j++) {
-                if ((i == this.x && j == this.y) || (i < 0) || (j < 0)) {
+                if ((i == this.x && j == this.y) || (i < 0) || (j < 0) || (j > 7) || (i > 7)) {
                     continue;
                 }
-                else if (board.myBoard[i * 8+j].occupied && board.myBoard[i * 8+j].getSquare().colour == this.colour) {
+                else if (board.checkSquare(i, j) && board.getSquare(i, j).getPieceColour() == this.colour) {
                     continue;
                 }
                 else {
@@ -78,7 +78,7 @@ export class Knight extends Piece{
                 let xcheck = Math.round(this.x + Math.cos(i) * 1);
                 let ycheck = Math.round(this.y + Math.cos(j) * 2);
                 if (xcheck >= 0 && xcheck < 8 && ycheck < 8 && ycheck >= 0) {
-                    if (board.checkSquare(xcheck, ycheck) && board.getSquare(xcheck, ycheck) == this.colour) {
+                    if (board.checkSquare(xcheck, ycheck) && board.getSquare(xcheck, ycheck).getPieceColour() != this.colour) {
                         continue;
                     }
                     else {
@@ -91,9 +91,10 @@ export class Knight extends Piece{
         for (let i = PI; i <= 2 * PI; i += PI) {
             for (let j = PI; j <= 2 * PI; j+= PI) {
                 let xcheck = Math.round(this.x + Math.cos(i) * 2);
-                let ycheck = Math.round(this.y + Math.cos(j) * 1);
+                let ycheck = Math.round(this.y + Math.cos(j) * 1);      
                 if (xcheck >= 0 && xcheck < 8 && ycheck < 8 && ycheck >= 0) {
-                    if (board.checkSquare(xcheck, ycheck) && board.getSquare(xcheck, ycheck) == this.colour) {
+                    if (board.checkSquare(xcheck, ycheck) && board.getSquare(xcheck, ycheck) != this.colour) {
+
                         continue;
                     }
                     else {
@@ -134,17 +135,16 @@ export class Pawn extends Piece{
             direction = 1;
         }
         
-        if (!board.checkSquare(this.x, this.y + direction) || board.getSquare(this.x, this.y + direction).colour != this.colour) {
+        if (!board.checkSquare(this.x, this.y + direction) || board.getSquare(this.x, this.y + direction).getPieceColour() != this.colour) {
             validArr.push(board.getSquare(this.x, this.y + direction));
-            console.log('1');
         }
-        if (this.y == ((7 + direction) % 7) && (!board.checkSquare(this.x, this.y + 2 * direction) || board.getSquare(this.x, this.y + 2 * direction).colour != this.colour)) {
+        if (this.y == ((7 + direction) % 7) && (!board.checkSquare(this.x, this.y + 2 * direction) || board.getSquare(this.x, this.y + 2 * direction).getPieceColour() != this.colour)) {
             validArr.push(board.getSquare(this.x, this.y + 2 * direction));
         }
-        if (board.checkSquare(this.x + 1, this.y + direction) && board.getSquare(this.x + 1, this.y + direction).colour != this.colour) {
+        if (board.checkSquare(this.x + 1, this.y + direction) && board.getSquare(this.x + 1, this.y + direction).getPieceColour() != this.colour) {
             validArr.push(board.getSquare(this.x + 1, this.y + direction));
         }
-        if (board.checkSquare(this.x - 1, this.y + direction ) && board.getSquare(this.x - 1, this.y + direction).colour != this.colour) {
+        if (board.checkSquare(this.x - 1, this.y + direction ) && board.getSquare(this.x - 1, this.y + direction).getPieceColour() != this.colour) {
             validArr.push(board.getSquare(this.x - 1, this.y + direction));
         }
 
@@ -170,7 +170,7 @@ function checkBottomLine(colour, x, y, board, arr) {
         arr.push(board.myBoard[y * 8 + x]);
         y++;
     }
-    if(y <= 0 && board.myBoard[y * 8 + x].getSquare().colour != colour) {
+    if(y <= 0 && board.getSquare(x, y).getPieceColour() != colour) {
         arr.push(board.myBoard[y * 8 + x]);
     }
 }
@@ -182,7 +182,7 @@ function checkTopLine(colour, x, y, board, arr) {
         y--;
     }
 
-    if(y >= 0 && board.myBoard[y * 8 + x].getSquare().colour != colour) {
+    if(y >= 0 && board.getSquare(x, y).getPieceColour() != colour) {
         arr.push(board.myBoard[y*8 + x]);
     }
 
@@ -192,7 +192,7 @@ function checkTopLine(colour, x, y, board, arr) {
         arr.push(board.myBoard[y*8 + x]);
         x++;
     }
-    if(x <= 7 && board.myBoard[y * 8 + x].getSquare().colour != colour) {
+    if(x <= 7 && board.getSquare(x, y).getPieceColour() != colour) {
         arr.push(board.myBoard[y*8 + x]);
     }
 
@@ -202,7 +202,7 @@ function checkTopLine(colour, x, y, board, arr) {
         arr.push(board.myBoard[y*8 + x]);
         x--;
     }
-    if(x >= 0 && board.myBoard[y * 8 + x].getSquare().colour != colour) {
+    if(x >= 0 && board.getSquare(x, y).getPieceColour() != colour) {
         arr.push(board.myBoard[y*8 + x]);
     }
 }
@@ -210,12 +210,13 @@ function checkTopLine(colour, x, y, board, arr) {
 function checkTopLeft(colour, x, y, board, arr) {
     x--;
     y--;
+    
     while (x >= 0 && y >= 0 && !board.checkSquare(x, y)) {
         arr.push(board.getSquare(x, y));
         x--;
         y--;
     }
-    if (x >= 0 && y >= 0 && board.getSquare(x, y).colour != colour) {
+    if (x >= 0 && y >= 0 && board.getSquare(x, y).getPieceColour() != colour) {
         arr.push(board.getSquare(x, y));
     }
 }
@@ -228,7 +229,7 @@ function checkTopRight(colour, x, y, board, arr) {
         x++;
         y--;
     }
-    if (x <= 7 && y >= 0 && board.getSquare(x, y).colour != colour) {
+    if (x <= 7 && y >= 0 && board.getSquare(x, y).getPieceColour() != colour) {
         arr.push(board.getSquare(x, y));
     }
 }
@@ -236,12 +237,13 @@ function checkTopRight(colour, x, y, board, arr) {
 function checkBottomLeft(colour, x, y, board, arr) {
     x--;
     y++;
+    console.log(x, y);
     while (x >= 0 && y <= 7 && !board.checkSquare(x, y)) {
         arr.push(board.getSquare(x, y));
         x--;
         y++;
     }
-    if (x >= 0 && y <= 7 && board.getSquare(x, y).colour != colour) {
+    if (x >= 0 && y <= 7 && board.getSquare(x, y).getPieceColour() != colour) {
         arr.push(board.getSquare(x, y));
     }
 }
@@ -254,7 +256,7 @@ function checkBottomRight(colour, x, y, board, arr) {
         x++;
         y++;
     }
-    if (x <= 7 && y <= 7 && board.getSquare(x, y).colour != colour) {
+    if (x <= 7 && y <= 7 && board.getSquare(x, y).getPieceColour() != colour) {
         arr.push(board.getSquare(x, y));
     }
 }
@@ -293,12 +295,14 @@ export class Bishop extends Piece {
         super(colour, x, y);
     }
 
-    getValidMoves() {
+    getValidMoves(board) {
         let validArr = [];
         checkBottomLeft(this.colour, this.x, this.y, board, validArr);
         checkBottomRight(this.colour, this.x, this.y, board, validArr);
         checkTopLeft(this.colour, this.x, this.y, board, validArr);
         checkTopRight(this.colour, this.x, this.y, board, validArr);
+
+        return validArr;
     }
 
     display(x, y) {let myPic = document.createElement('img');

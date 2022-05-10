@@ -4,7 +4,6 @@ function addSquares() {
             if ((j + i) % 2 == 0) {
                 let whiteSquare = document.createElement('div');
                 whiteSquare.classList.add('whiteSquare');
-                //whiteSquare.innerText = `${j}, ${i}`;
                 document.getElementById('board').children.item(i).appendChild(whiteSquare);
             }
 
