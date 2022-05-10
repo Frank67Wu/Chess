@@ -29,15 +29,30 @@ function newGame() {
     board.setPiece(0, 1, new Knight('black', 1, 0));
     board.setPiece(0, 6, new Knight('black', 6, 0));
 
-    board.setPiece(7, 3, new King('white', 3, 7));
-    board.setPiece(7, 4, new King('black', 4, 7));
+    board.setPiece(7, 3, new King('white', 7, 3));
+    board.setPiece(0, 4, new King('black', 0, 4));
 
-    board.setPiece(0, 4, new Queen('white', 4, 0));
-    board.setPiece(0, 3, new Queen('black', 3, 0));
+    board.setPiece(7, 4, new Queen('white', 7, 4));
+    board.setPiece(0, 3, new Queen('black', 0, 3));
+
+    displayPiecesStart(board);
 
     return board;
 }
 
+function displayPiecesStart(board) {
+    for (let i = 0; i < 2; i++) {
+        for (let j = 0; j < 8; j++) {
+            board.getPiece(i, j).display(i, j);
+        }
+    }
+
+    for (let i = 6; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+            board.getPiece(i, j).display(i, j);
+        }
+    }
+}
 let myboard = newGame();
 
 function showOccupied(board) {
@@ -46,7 +61,7 @@ function showOccupied(board) {
             if (board.checkSquare(i, j)) {
                 let mySquare = document.getElementById('board').children.item(i).children.item(j);
                 if ((i + j) % 2 == 0) {
-                    mySquare.style.filter = "brightness(80%)";
+                    //mySquare.style.filter = "brightness(80%)";
                 }
                 else {
                     mySquare.style.backgroundColor = 'gray';
@@ -56,4 +71,7 @@ function showOccupied(board) {
     }
 }
 
+
+
 showOccupied(myboard);
+

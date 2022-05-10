@@ -8,12 +8,17 @@
     height: 5em;
     width: 5em;
     background-color: black;
+    display: flex;
+    justify-content: center;
+    
 }
 
 .whiteSquare {
     height: 5em;
     width: 5em;
     background-color: white;
+    display: flex;
+    justify-content: center;
 }
 
 #board > div {

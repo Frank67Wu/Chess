@@ -8,10 +8,6 @@ export class Square {
         this.piece = null;
     }
 
-    getPiece() {
-        return this.piece;
-    }
-
     putPiece(piece) {
         this.piece = piece;
         this.occupied = true;
@@ -39,8 +35,12 @@ export class Board{
         }
     }
 
-    getPiece(x, y) {
+    getSquare(x, y) {
         return (this.myBoard[y*8 + x]);
+    }
+
+    getPiece(x, y) {
+        return (this.myBoard[y * 8 + x].piece);
     }
 
     setPiece(x, y, piece) {

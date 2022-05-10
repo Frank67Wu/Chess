@@ -25,6 +25,7 @@ class Piece {
         this.x = x;
         this.y = y;
     }
+
 }
 
 export class King extends Piece {
@@ -40,7 +41,7 @@ export class King extends Piece {
                 if ((i == this.x && j == this.y) || (i < 0) || (j < 0)) {
                     continue;
                 }
-                else if (board.myBoard[i * 8+j].occupied && board.myBoard[i * 8+j].getPiece().colour == this.colour) {
+                else if (board.myBoard[i * 8+j].occupied && board.myBoard[i * 8+j].getSquare().colour == this.colour) {
                     continue;
                 }
                 else {
@@ -49,6 +50,17 @@ export class King extends Piece {
             }
         }
         return validArr;
+    }
+
+    display(x, y) {let myPic = document.createElement('img');
+    if (this.colour == 'white') {
+        myPic.src = './images/Chess_whiteKing.png';
+    }
+    else {
+        myPic.src = './images/Chess_blackKing.png';
+    }
+    let mySquare = document.getElementById('board').children.item(x).children.item(y);
+    mySquare.appendChild(myPic);
     }
 }
 
@@ -66,11 +78,11 @@ export class Knight extends Piece{
                 let xcheck = Math.round(this.x + Math.cos(i) * 1);
                 let ycheck = Math.round(this.y + Math.cos(j) * 2);
                 if (xcheck >= 0 && xcheck < 8 && ycheck < 8 && ycheck >= 0) {
-                    if (board.checkSquare(xcheck, ycheck) && board.getPiece(xcheck, ycheck) == this.colour) {
+                    if (board.checkSquare(xcheck, ycheck) && board.getSquare(xcheck, ycheck) == this.colour) {
                         continue;
                     }
                     else {
-                        validArr.push(board.getPiece(xcheck, ycheck));
+                        validArr.push(board.getSquare(xcheck, ycheck));
                     }
                 }
             }
@@ -81,18 +93,28 @@ export class Knight extends Piece{
                 let xcheck = Math.round(this.x + Math.cos(i) * 2);
                 let ycheck = Math.round(this.y + Math.cos(j) * 1);
                 if (xcheck >= 0 && xcheck < 8 && ycheck < 8 && ycheck >= 0) {
-                    if (board.checkSquare(xcheck, ycheck) && board.getPiece(xcheck, ycheck) == this.colour) {
+                    if (board.checkSquare(xcheck, ycheck) && board.getSquare(xcheck, ycheck) == this.colour) {
                         continue;
                     }
                     else {
-                        validArr.push(board.getPiece(xcheck, ycheck));
+                        validArr.push(board.getSquare(xcheck, ycheck));
                     }
                 }
             }
         }
 
         return validArr;
+    }
 
+    display(x, y) {let myPic = document.createElement('img');
+    if (this.colour == 'white') {
+        myPic.src = './images/Chess_whiteKnight.png';
+    }
+    else {
+        myPic.src = './images/Chess_blackKnight.png';
+    }
+    let mySquare = document.getElementById('board').children.item(x).children.item(y);
+    mySquare.appendChild(myPic);
     }
 }
 
@@ -112,21 +134,33 @@ export class Pawn extends Piece{
             direction = 1;
         }
         
-        if (!board.checkSquare(this.x, this.y + direction) || board.getPiece(this.x, this.y + direction).colour != this.colour) {
-            validArr.push(board.getPiece(this.x, this.y + direction));
+        if (!board.checkSquare(this.x, this.y + direction) || board.getSquare(this.x, this.y + direction).colour != this.colour) {
+            validArr.push(board.getSquare(this.x, this.y + direction));
             console.log('1');
         }
-        if (this.y == ((7 + direction) % 7) && (!board.checkSquare(this.x, this.y + 2 * direction) || board.getPiece(this.x, this.y + 2 * direction).colour != this.colour)) {
-            validArr.push(board.getPiece(this.x, this.y + 2 * direction));
+        if (this.y == ((7 + direction) % 7) && (!board.checkSquare(this.x, this.y + 2 * direction) || board.getSquare(this.x, this.y + 2 * direction).colour != this.colour)) {
+            validArr.push(board.getSquare(this.x, this.y + 2 * direction));
         }
-        if (board.checkSquare(this.x + 1, this.y + direction) && board.getPiece(this.x + 1, this.y + direction).colour != this.colour) {
-            validArr.push(board.getPiece(this.x + 1, this.y + direction));
+        if (board.checkSquare(this.x + 1, this.y + direction) && board.getSquare(this.x + 1, this.y + direction).colour != this.colour) {
+            validArr.push(board.getSquare(this.x + 1, this.y + direction));
         }
-        if (board.checkSquare(this.x - 1, this.y + direction ) && board.getPiece(this.x - 1, this.y + direction).colour != this.colour) {
-            validArr.push(board.getPiece(this.x - 1, this.y + direction));
+        if (board.checkSquare(this.x - 1, this.y + direction ) && board.getSquare(this.x - 1, this.y + direction).colour != this.colour) {
+            validArr.push(board.getSquare(this.x - 1, this.y + direction));
         }
 
         return validArr;
+    }
+
+    display(x, y) {
+        let myPic = document.createElement('img');
+        if (this.colour == 'white') {
+            myPic.src = './images/Chess_whitepawn.png';
+        }
+        else {
+            myPic.src = './images/Chess_blackPawn.png';
+        }
+        let mySquare = document.getElementById('board').children.item(x).children.item(y);
+        mySquare.appendChild(myPic);
     }
 }   
 
@@ -136,7 +170,7 @@ function checkBottomLine(colour, x, y, board, arr) {
         arr.push(board.myBoard[y * 8 + x]);
         y++;
     }
-    if(y <= 0 && board.myBoard[y * 8 + x].getPiece().colour != colour) {
+    if(y <= 0 && board.myBoard[y * 8 + x].getSquare().colour != colour) {
         arr.push(board.myBoard[y * 8 + x]);
     }
 }
@@ -148,7 +182,7 @@ function checkTopLine(colour, x, y, board, arr) {
         y--;
     }
 
-    if(y >= 0 && board.myBoard[y * 8 + x].getPiece().colour != colour) {
+    if(y >= 0 && board.myBoard[y * 8 + x].getSquare().colour != colour) {
         arr.push(board.myBoard[y*8 + x]);
     }
 
@@ -158,7 +192,7 @@ function checkTopLine(colour, x, y, board, arr) {
         arr.push(board.myBoard[y*8 + x]);
         x++;
     }
-    if(x <= 7 && board.myBoard[y * 8 + x].getPiece().colour != colour) {
+    if(x <= 7 && board.myBoard[y * 8 + x].getSquare().colour != colour) {
         arr.push(board.myBoard[y*8 + x]);
     }
 
@@ -168,7 +202,7 @@ function checkTopLine(colour, x, y, board, arr) {
         arr.push(board.myBoard[y*8 + x]);
         x--;
     }
-    if(x >= 0 && board.myBoard[y * 8 + x].getPiece().colour != colour) {
+    if(x >= 0 && board.myBoard[y * 8 + x].getSquare().colour != colour) {
         arr.push(board.myBoard[y*8 + x]);
     }
 }
@@ -177,12 +211,12 @@ function checkTopLeft(colour, x, y, board, arr) {
     x--;
     y--;
     while (x >= 0 && y >= 0 && !board.checkSquare(x, y)) {
-        arr.push(board.getPiece(x, y));
+        arr.push(board.getSquare(x, y));
         x--;
         y--;
     }
-    if (x >= 0 && y >= 0 && board.getPiece(x, y).colour != colour) {
-        arr.push(board.getPiece(x, y));
+    if (x >= 0 && y >= 0 && board.getSquare(x, y).colour != colour) {
+        arr.push(board.getSquare(x, y));
     }
 }
 
@@ -190,12 +224,12 @@ function checkTopRight(colour, x, y, board, arr) {
     x++;
     y--;
     while (x <= 7 && y >= 0 && !board.checkSquare(x, y)) {
-        arr.push(board.getPiece(x, y));
+        arr.push(board.getSquare(x, y));
         x++;
         y--;
     }
-    if (x <= 7 && y >= 0 && board.getPiece(x, y).colour != colour) {
-        arr.push(board.getPiece(x, y));
+    if (x <= 7 && y >= 0 && board.getSquare(x, y).colour != colour) {
+        arr.push(board.getSquare(x, y));
     }
 }
 
@@ -203,12 +237,12 @@ function checkBottomLeft(colour, x, y, board, arr) {
     x--;
     y++;
     while (x >= 0 && y <= 7 && !board.checkSquare(x, y)) {
-        arr.push(board.getPiece(x, y));
+        arr.push(board.getSquare(x, y));
         x--;
         y++;
     }
-    if (x >= 0 && y <= 7 && board.getPiece(x, y).colour != colour) {
-        arr.push(board.getPiece(x, y));
+    if (x >= 0 && y <= 7 && board.getSquare(x, y).colour != colour) {
+        arr.push(board.getSquare(x, y));
     }
 }
 
@@ -216,12 +250,12 @@ function checkBottomRight(colour, x, y, board, arr) {
     x++;
     y++;
     while (x <= 7 && y <= 7 && !board.checkSquare(x, y)) {
-        arr.push(board.getPiece(x, y));
+        arr.push(board.getSquare(x, y));
         x++;
         y++;
     }
-    if (x <= 7 && y <= 7 && board.getPiece(x, y).colour != colour) {
-        arr.push(board.getPiece(x, y));
+    if (x <= 7 && y <= 7 && board.getSquare(x, y).colour != colour) {
+        arr.push(board.getSquare(x, y));
     }
 }
 
@@ -240,6 +274,17 @@ export class Rook extends Piece {
         checkRightLine(this.colour, this.x, this.y, board, validArr);
         return validArr;
     }
+
+    display(x, y) {let myPic = document.createElement('img');
+    if (this.colour == 'white') {
+        myPic.src = './images/Chess_whiteRook.png';
+    }
+    else {
+        myPic.src = './images/Chess_blackRook.png';
+    }
+    let mySquare = document.getElementById('board').children.item(x).children.item(y);
+    mySquare.appendChild(myPic);
+    }
 }
 
 export class Bishop extends Piece {
@@ -254,6 +299,17 @@ export class Bishop extends Piece {
         checkBottomRight(this.colour, this.x, this.y, board, validArr);
         checkTopLeft(this.colour, this.x, this.y, board, validArr);
         checkTopRight(this.colour, this.x, this.y, board, validArr);
+    }
+
+    display(x, y) {let myPic = document.createElement('img');
+    if (this.colour == 'white') {
+        myPic.src = './images/Chess_whiteBishop.png';
+    }
+    else {
+        myPic.src = './images/Chess_blackBishop.png';
+    }
+    let mySquare = document.getElementById('board').children.item(x).children.item(y);
+    mySquare.appendChild(myPic);
     }
 }
 
@@ -276,5 +332,16 @@ export class Queen extends Piece {
         checkTopLeft(this.colour, this.x, this.y, board, validArr);
         checkTopRight(this.colour, this.x, this.y, board, validArr);
         return validArr;
+    }
+
+    display(x, y) {let myPic = document.createElement('img');
+    if (this.colour == 'white') {
+        myPic.src = './images/Chess_whiteQueen.png';
+    }
+    else {
+        myPic.src = './images/Chess_blackQueen.png';
+    }
+    let mySquare = document.getElementById('board').children.item(x).children.item(y);
+    mySquare.appendChild(myPic);
     }
 }
