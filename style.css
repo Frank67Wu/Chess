@@ -7,7 +7,7 @@
 .blackSquare {
     height: 78px;
     width: 78px;
-    background-color: black;
+    background-color: gray;
     display: flex;
     border-style: solid;
     border-width: 1px;

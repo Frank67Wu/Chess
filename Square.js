@@ -22,6 +22,7 @@ export class Board{
     
     constructor() {
         this.myBoard = [];
+        this.turnColour = 'white';
     }
 
     setSquares() {
@@ -47,12 +48,30 @@ export class Board{
         this.myBoard[y * 8 + x].putPiece(piece);
     }
 
+    removePiece(x, y) {
+        this.myBoard[y * 8 + x].piece = null;
+        this.myBoard[y * 8 + x].occupied = false;
+    }
+
     checkSquare(x, y) {
         return (this.myBoard[y*8 + x].occupied);
     }
 
     displayBoard() {
         console.log(this.myBoard);
+    }
+
+    getTurn() {
+        return this.turnColour;
+    }
+
+    changeTurn() {
+        if (this.turnColour == 'white') {
+            this.turnColour = 'black';
+        }
+        else if (this.turnColour == 'black') {
+            this.turnColour = 'white';
+        }
     }
 
 }

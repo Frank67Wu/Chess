@@ -9,6 +9,7 @@ function newGame() {
     board.setSquares();
 
     let highlighted  = [];
+    let toMove = [];
 
     for(let i = 0; i < 8; i++) {
         board.setPiece(i, 6, new Pawn('white', i, 6));
@@ -38,7 +39,7 @@ function newGame() {
     board.setPiece(3, 0, new Queen('black', 3, 0));
 
     displayPiecesStart(board);
-    createUserInteraction(board, highlighted);
+    createUserInteraction(board, highlighted, toMove);
     
 
     return board;
@@ -82,24 +83,36 @@ function clearHighlight(board, toClear) {
     }
 }
 
-function createUserInteraction(board, highlighted) {
+function createUserInteraction(board, highlighted, toMove) {
     for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
                 let mySquare = document.getElementById('board').children.item(i).children.item(j);
                 mySquare.addEventListener('click', () => {   
-                    clearHighlight(board, highlighted);        
-                    if (board.checkSquare(j, i)) {
+                    if (mySquare.classList.contains('highlight')) {
+                        console.log(toMove[0]);
+                        let imgRemove = document.getElementById('board').children.item(toMove[0].y).children.item(toMove[0].x);
+                        imgRemove.removeChild(imgRemove.children[0]);
+                        board.removePiece(toMove[0].x, toMove[0].y);
+                        board.setPiece(j, i, toMove[0]);
+                        toMove[0].move(j, i);
+                        board.getPiece(j, i).display(i, j);
+                        board.changeTurn();
+                    } 
+                       
+                    clearHighlight(board, highlighted);    
+                    toMove.shift(); 
+                    if (board.checkSquare(j, i) && board.getTurn() == board.getSquare(j, i).getPieceColour(j, i)) {
+                        toMove.push(board.getPiece(j, i));
                         let validMoves = board.getPiece(j,i).getValidMoves(board);  
                         for (let k = 0; k < validMoves.length; k++) {
                             document.getElementById('board').children.item(validMoves[k].y).children.item(validMoves[k].x).classList.add('highlight');
                             highlighted.push(validMoves[k]);
                         }
                     } 
-                    console.log(highlighted);
                 })
             }
     }
 }
 
-showOccupied(myboard);
+
 
